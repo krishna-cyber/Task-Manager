@@ -1,6 +1,6 @@
-#frontend
+# frontend
 
-#Backend
+# Backend
 
 ## Express Task Manager App with pnpm 😄
 
