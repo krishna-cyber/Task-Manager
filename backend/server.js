@@ -5,7 +5,7 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 
 //importing required files
-// const dbConnection = require("./config/Dbconnection");
+const routes = require("./routes/route");
 
 //loading env variables
 require("dotenv").config();
@@ -14,15 +14,14 @@ require("dotenv").config();
 const app = express();
 
 //middlewares
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
 app.use(helmet());
 
-//creating routes
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
+//routes
+app.use("/", routes);
 
 //Database connection and server listening
 
