@@ -7,11 +7,12 @@ router.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-router.post("/add", (req, res) => {
+//post request to add a task
+router.post("/add", async (req, res) => {
   console.log(req.body);
   const task = new Task(req.body);
   //saving task to the database using promise
-  task
+  await task
     .save()
     .then((result) => {
       console.log(result);
@@ -20,6 +21,18 @@ router.post("/add", (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(400).send("unable to save to database");
+    });
+});
+
+//get request to get all tasks
+router.get("/tasks", async (req, res) => {
+  await Task.find({})
+    .then((result) => {
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send("unable to get tasks");
     });
 });
 
