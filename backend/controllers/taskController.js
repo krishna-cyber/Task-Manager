@@ -6,7 +6,7 @@ const home = (req, res) => {
 };
 
 //get all tasks
-const gettask = async (req, res) => {
+const gettasks = async (req, res) => {
   await Task.find({})
     .then((result) => {
       res.status(200).send(result);
@@ -34,8 +34,22 @@ const addtask = async (req, res) => {
     });
 };
 
+//get a single task
+const gettask = async (req, res) => {
+  console.log(req.params);
+  await Task.findById(req.params.id)
+    .then((result) => {
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send("unable to get task");
+    });
+};
+
 module.exports = {
   home,
+  gettasks,
   gettask,
   addtask,
 };
