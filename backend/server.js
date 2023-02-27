@@ -21,7 +21,7 @@ app.use(morgan("dev"));
 app.use(helmet());
 
 //routes
-app.use("/", routes);
+app.use("/tasks", routes);
 
 //Database connection and server listening
 
