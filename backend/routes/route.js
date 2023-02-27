@@ -3,6 +3,7 @@ const {
   gettasks,
   gettask,
   addtask,
+  deletetask,
   home,
 } = require("../controllers/taskController");
 
@@ -18,5 +19,8 @@ router.get("/tasks", gettasks);
 
 //get request to get a single ta
 router.get("/tasks/:id", gettask);
+
+//delete request to delete a task
+router.delete("/tasks/:id", deletetask);
 
 module.exports = router;
