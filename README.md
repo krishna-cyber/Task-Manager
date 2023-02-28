@@ -1,13 +1,21 @@
 # frontend
 
+---
+
 # Backend
 
+---
+
 ## Express Task Manager App with pnpm 😄
+
+---
 
 Express Task Manager App with pnpm 🪟
 This is a simple task manager app built with `Express.js`, `Node.js`, and `MongoDB`, using the`pnpm`package manager.
 
 ### Installation
+
+---
 
 1. Clone the repository: git clone `https://github.com/YOUR-USERNAME/express-task-manager.git`
 2. Install dependencies using `pnpm install`
