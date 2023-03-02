@@ -1,9 +1,11 @@
-import reactLogo from "./assets/react.svg";
+import TaskList from "./components/TaskList";
 
 function App() {
   return (
     <>
-      <h1 className=' text-red-300 text-lg'>React App</h1>
+      <div className=' flex justify-center items-center h-screen w-screen bg-blue-400'>
+        <TaskList />
+      </div>
     </>
   );
 }
