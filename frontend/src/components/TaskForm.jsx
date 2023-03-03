@@ -2,18 +2,19 @@ import server from "../../public/config/server";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-const TaskForm = () => {
+const TaskForm = ({ fetchData }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const onSubmit = async (data) => {
     await server
       .post("http://localhost:3000/tasks/add", data)
       .then((res) => {
-        console.log(res);
         toast.success("Task added successfully !");
+        fetchData();
       })
       .catch((err) => {
         console.log(err);

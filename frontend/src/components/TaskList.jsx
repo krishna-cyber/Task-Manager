@@ -1,16 +1,18 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import Task from "./Task";
 import TaskForm from "./TaskForm";
 import loader from "../assets/loader.gif";
 
-const setTasks = async () => {};
+// const setTasks = async () => {};
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     fetchData();
   }, []);
+
   const fetchData = async () => {
     setLoading(true);
     await axios
@@ -24,11 +26,24 @@ const TaskList = () => {
         setLoading(false);
       });
   };
+  const deletask = async (id) => {
+    await axios
+      .delete(`http://localhost:3000/tasks/${id}`)
+      .then((res) => {
+        fetchData();
+        toast.success("Task deleted successfully !");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(`${err.message}🥺`);
+      });
+  };
+
   return (
     <>
       <div className='task bg-slate-200 p-4 w-[30%] rounded-lg'>
         <h1 className=' text-2xl mb-4'>Task Manager</h1>
-        <TaskForm />
+        <TaskForm fetchData={fetchData} />
         <div className=' mt-2 flex justify-between'>
           <span className=' font-semibold flex'>
             <p>Total Tasks: </p>
@@ -53,7 +68,14 @@ const TaskList = () => {
         )}
         {!loading &&
           tasks.map((task, index) => {
-            return <Task key={task._id} task={task} index={index} />;
+            return (
+              <Task
+                key={task._id}
+                task={task}
+                index={index}
+                deletask={deletask}
+              />
+            );
           })}
       </div>
     </>
