@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import Task from "./Task";
 import TaskForm from "./TaskForm";
+
 import loader from "../assets/loader.gif";
 
 // const setTasks = async () => {};
@@ -10,6 +11,9 @@ const TaskList = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [editing, isEditing] = useState(false);
+  const [editTask, setEditTask] = useState({});
+  const [completed, setCompleted] = useState([]);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -19,15 +23,17 @@ const TaskList = () => {
     await axios
       .get("http://localhost:3000/tasks")
       .then((res) => {
-        setTasks(res.data);
         setLoading(false);
+        setTasks(res.data);
+        setCompleted(tasks.filter((task) => task.completed === true));
+        isEditing(false);
       })
       .catch((err) => {
         console.log(err);
         setLoading(false);
       });
   };
-  const deletask = async (id) => {
+  const deletetask = async (id) => {
     await axios
       .delete(`http://localhost:3000/tasks/${id}`)
       .then((res) => {
@@ -42,14 +48,28 @@ const TaskList = () => {
 
   const getSingleTask = (task) => {
     isEditing(true);
-    console.log(task);
+
+    setEditTask(task);
   };
 
+  const completetask = async (task) => {
+    task.completed = true;
+    await axios
+      .put(`http://localhost:3000/tasks/${task._id}`, task)
+      .then((res) => {
+        fetchData();
+        toast.success("Task completed successfully !");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(`${err.message}🥺`);
+      });
+  };
   return (
     <>
       <div className='task bg-slate-200 p-4 w-[30%] rounded-lg'>
         <h1 className=' text-2xl mb-4'>Task Manager</h1>
-        <TaskForm fetchData={fetchData} editing={editing} />
+        <TaskForm fetchData={fetchData} editing={editing} editTask={editTask} />
         <div className=' mt-2 flex justify-between'>
           <span className=' font-semibold flex'>
             <p>Total Tasks: </p>
@@ -57,7 +77,7 @@ const TaskList = () => {
           </span>
           <span className=' font-semibold flex'>
             <p>Completed Tasks: </p>
-            <span className=' text-green-400 ml-2'>{0}</span>
+            <span className=' text-green-400 ml-2'>{completed.length}</span>
           </span>
         </div>
         {loading && (
@@ -79,8 +99,9 @@ const TaskList = () => {
                 key={task._id}
                 task={task}
                 index={index}
-                deletask={deletask}
+                deletetask={deletetask}
                 getSingleTask={getSingleTask}
+                completetask={completetask}
               />
             );
           })}

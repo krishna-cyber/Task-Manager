@@ -12,6 +12,6 @@
     "morgan": "^1.10.0"
   },
   "scripts": {
-    "dev": "node --watch server.js"
+    "dev": "nodemon server.js"
   }
 }

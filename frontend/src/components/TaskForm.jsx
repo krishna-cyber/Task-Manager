@@ -2,25 +2,41 @@ import server from "../../public/config/server";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-const TaskForm = ({ fetchData, editing }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+const TaskForm = ({ fetchData, editing, editTask }) => {
+  const { register, handleSubmit, setValue, getValues } = useForm();
 
   const onSubmit = async (data) => {
+    if (!editing) {
+      await server
+        .post("http://localhost:3000/tasks/add", data)
+        .then((res) => {
+          toast.success("Task added successfully !");
+          fetchData();
+          setValue("title", "");
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(`${err.message}🥺`);
+        });
+    }
+  };
+
+  const updateData = async (editTask) => {
+    editTask.title = getValues("title");
     await server
-      .post("http://localhost:3000/tasks/add", data)
+      .put(`http://localhost:3000/tasks/${editTask._id}`, editTask)
       .then((res) => {
-        toast.success("Task added successfully !");
+        toast.success("Task updated successfully !");
         fetchData();
+        setValue("title", "");
+        editing = false;
       })
       .catch((err) => {
         console.log(err);
         toast.error(`${err.message}🥺`);
       });
   };
+
   return (
     <>
       <form
@@ -31,9 +47,22 @@ const TaskForm = ({ fetchData, editing }) => {
           {...register("title", { required: true })}
           placeholder='Add a task'
         />
-        <button className='btn cursor-pointer' type='submit'>
-          {editing ? "edit" : "submit"}
-        </button>
+
+        {editing ? setValue("title", editTask.title) : null}
+
+        {editing ? (
+          <button
+            className='btn cursor-pointer'
+            onClick={() => {
+              updateData(editTask);
+            }}>
+            edit
+          </button>
+        ) : (
+          <button className='btn cursor-pointer' type='submit'>
+            submit
+          </button>
+        )}
       </form>
     </>
   );
