@@ -9,6 +9,7 @@ import loader from "../assets/loader.gif";
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [editing, isEditing] = useState(false);
   useEffect(() => {
     fetchData();
   }, []);
@@ -39,11 +40,16 @@ const TaskList = () => {
       });
   };
 
+  const getSingleTask = (task) => {
+    isEditing(true);
+    console.log(task);
+  };
+
   return (
     <>
       <div className='task bg-slate-200 p-4 w-[30%] rounded-lg'>
         <h1 className=' text-2xl mb-4'>Task Manager</h1>
-        <TaskForm fetchData={fetchData} />
+        <TaskForm fetchData={fetchData} editing={editing} />
         <div className=' mt-2 flex justify-between'>
           <span className=' font-semibold flex'>
             <p>Total Tasks: </p>
@@ -74,6 +80,7 @@ const TaskList = () => {
                 task={task}
                 index={index}
                 deletask={deletask}
+                getSingleTask={getSingleTask}
               />
             );
           })}

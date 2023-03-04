@@ -1,6 +1,6 @@
 import { FaCheckDouble, FaEdit, FaTrashAlt } from "react-icons/fa";
 
-const Task = ({ task, index, deletask }) => {
+const Task = ({ task, index, deletask, getSingleTask }) => {
   return (
     <>
       <div
@@ -11,7 +11,12 @@ const Task = ({ task, index, deletask }) => {
         </p>
         <div className='flex gap-3'>
           <FaCheckDouble className=' text-green-500 cursor-pointer' />
-          <FaEdit className=' text-purple-500 cursor-pointer' />
+          <FaEdit
+            onClick={() => {
+              getSingleTask(task);
+            }}
+            className=' text-purple-500 cursor-pointer'
+          />
           <FaTrashAlt
             className=' text-red-500 cursor-pointer'
             onClick={() => {

@@ -2,7 +2,7 @@ import server from "../../public/config/server";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-const TaskForm = ({ fetchData }) => {
+const TaskForm = ({ fetchData, editing }) => {
   const {
     register,
     handleSubmit,
@@ -30,10 +30,10 @@ const TaskForm = ({ fetchData }) => {
           className=' p-1 w-full mr-4 outline-none rounded-md px-3 bg-slate-300'
           {...register("title", { required: true })}
           placeholder='Add a task'
-          required
         />
-
-        <input className='btn cursor-pointer' type='submit' />
+        <button className='btn cursor-pointer' type='submit'>
+          {editing ? "edit" : "submit"}
+        </button>
       </form>
     </>
   );
